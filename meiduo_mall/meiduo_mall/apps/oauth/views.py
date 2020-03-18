@@ -1,22 +1,21 @@
-import json
-import re
-
 from django.shortcuts import render
 
 # Create your views here.
-from QQLoginTool.QQtool import OAuthQQ
+import json
+import re
 from django.conf import settings
 from django.http import JsonResponse
 from django.views import View
+from django.contrib.auth import login
 from django_redis import get_redis_connection
+from QQLoginTool.QQtool import OAuthQQ
 from users.models import User
+from .utils import generate_access_token
+from .utils import check_access_token
 from .models import OAuthQQUser
 import logging
 
 logger = logging.getLogger('django')
-from django.contrib.auth import login
-from oauth.utils import generate_access_token
-from oauth.utils import check_access_token
 
 
 class QQURLView(View):
@@ -38,31 +37,35 @@ class QQUserView(View):
         if not code:
             return JsonResponse({'code': 400,
                                  'errmsg': '缺少code参数'})
+
         oauth = OAuthQQ(client_id=settings.QQ_CLIENT_ID,
                         client_secret=settings.QQ_CLIENT_SECRET,
                         redirect_uri=settings.QQ_REDIRECT_URI)
+
         try:
             access_token = oauth.get_access_token(code)
             openid = oauth.get_open_id(access_token)
+
         except Exception as error:
             logger.error(error)
             return JsonResponse({'code': 400,
                                  'errmsg': 'oauth2.0认证失败, 即获取qq信息失败'})
+
         try:
             oauth_qq = OAuthQQUser.objects.get(openid=openid)
+
         except OAuthQQUser.DoesNotExist:
             access_token = generate_access_token(openid)
             return JsonResponse({'code': 300,
                                  'errmsg': 'OK',
                                  'access_token': access_token})
+
         else:
             user = oauth_qq.user
             login(request, user)
             response = JsonResponse({'code': 0,
                                      'errmsg': 'OK'})
-            response.set_cookie('username',
-                                user.username,
-                                max_age=3600 * 24 * 14)
+            response.set_cookie('username', user.username, max_age=3600 * 24 * 14)
             return response
 
     def post(self, request):
@@ -88,10 +91,11 @@ class QQUserView(View):
 
         redis_conn = get_redis_connection('verify_code')
         sms_code_server = redis_conn.get('sms_%s' % mobile)
+
         if not sms_code_server:
             return JsonResponse({'code': 400,
                                  'errmsg': '验证码失效'})
-            # 如果有, 则进行判断:
+        # 如果有, 则进行判断:
         if sms_code_client != sms_code_server.decode():
             # 如果不匹配, 则直接返回:
             return JsonResponse({'code': 400,
