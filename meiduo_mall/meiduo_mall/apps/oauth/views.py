@@ -72,7 +72,7 @@ class QQUserView(View):
         sms_code_client = dict.get('sms_code')
         access_token = dict.get('access_token')
 
-        if not all([mobile, password, sms_code]):
+        if not all([mobile, password, sms_code_client]):
             return JsonResponse({'code': 400,
                                  'errmsg': '缺少必传参数'})
 
