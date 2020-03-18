@@ -16,4 +16,5 @@ class LoginRequiredMixin(object):
     @classmethod
     def as_view(cls, *args, **kwargs):
         view = super().as_view(*args, **kwargs)
-        return my_decorator(view)
+        view = my_decorator(view)
+        return view
