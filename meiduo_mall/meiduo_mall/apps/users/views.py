@@ -1,13 +1,14 @@
 import json
 import re
-
-from django.contrib.auth import login, authenticate, logout
-from django_redis import get_redis_connection
-
-from meiduo_mall.utils.view import LoginRequiredMixin
-from users.models import User
 from django.views import View
 from django.http import JsonResponse
+from django.contrib.auth import login, authenticate, logout
+from django_redis import get_redis_connection
+from meiduo_mall.utils.view import LoginRequiredMixin
+from users.models import User
+import logging
+
+logger = logging.getLogger('django')
 
 
 class RegisterView(View):
@@ -110,8 +111,72 @@ class LoginoutView(View):
 
 class UserInfoView(LoginRequiredMixin, View):
     """用户中心"""
+
     def get(self, request):
-        pass
+        info_data = {
+            'username': request.user.username,
+            'mobile': request.user.mobile,
+            'email': request.user.email,
+            'email_active': request.user.email_active
+        }
+
+        return JsonResponse({'code': 0,
+                             'errmsg': 'OK',
+                             'info_data': info_data})
+
+
+class EmailView(View):
+    """添加邮箱"""
+
+    def put(self, request):
+        json_dict = json.loads(request.body.decode())
+        email = json_dict.get('email')
+
+        if not email:
+            return JsonResponse({'code': 400,
+                                 'errmsg': '缺少email参数'})
+
+        if not re.match(r'^[a-z0-9][\w\.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$', email):
+            return JsonResponse({'code': 400,
+                                 'errmsg': '参数email有误'})
+
+        try:
+            request.user.email = email
+            request.user.save()
+        except Exception as error:
+            logger.error(error)
+            return JsonResponse({'code': 400,
+                                 'errmsg': '添加邮箱失败'})
+
+        from celery_tasks.email.tasks import send_verify_email
+        verify_url = request.user.generate_verify_email_url()
+        send_verify_email.delay(email, verify_url)
+
+        return JsonResponse({'code': 0,
+                             'errmsg': 'ok'})
+
+
+class VerifyEmailView(View):
+    """验证邮箱"""
+
+    def put(self, request):
+        token = request.GET.get('token')
+        if not token:
+            return JsonResponse({'code': 400,
+                                 'errmsg': '缺少token'})
+        user = User.check_verify_email_token(token)
+        if not user:
+            return JsonResponse({'code': 400,
+                                 'errmsg': '无效的token'})
+        try:
+            user.email_active = True
+            user.save()
+        except Exception as error:
+            logger.error(error)
+            return JsonResponse({'code': 400,
+                                 'errmsg': '激活邮件失败'})
+        return JsonResponse({'code': 0,
+                             'errmsg': 'ok'})
 
 
 class UsernameCountView(View):
