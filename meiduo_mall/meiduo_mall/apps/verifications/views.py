@@ -62,12 +62,13 @@ class SMSCodeView(View):
             return http.JsonResponse({'code': 400,
                                       'errmsg': '输入有误'})
         # 生成6位短信验证码
-        sms_code = '%06d' % random.randint(0, 999999)
+        # sms_code = '%06d' % random.randint(0, 999999)
+        sms_code = 123456
         logger.info(sms_code)
         # 创建管道并执行
         pl = redis_conn.pipeline()
         pl.setex('sms_%s' % mobile, 300, sms_code)
-        pl.setex('send_flag_%s'%mobile, 60, 1)
+        pl.setex('send_flag_%s' % mobile, 60, 1)
         pl.execute()
         # 发送短信
         # CCP().send_template_sms(mobile, [sms_code, 5], 1)

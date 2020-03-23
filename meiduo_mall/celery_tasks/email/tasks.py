@@ -6,7 +6,7 @@ import logging
 logger = logging.getLogger('django')
 
 
-@celery_app.tasks(name='send_verify_email')
+@celery_app.task(name='send_verify_email')
 def send_verify_email(to_email, verify_url):
     subject = '美多商城邮箱验证'
     html_message = '<p>尊敬的用户您好！</p>' \
