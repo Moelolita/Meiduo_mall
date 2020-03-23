@@ -1,7 +1,0 @@
-INFO 2020-03-23 11:54:06,858 autoreload 598 Watching for file changes with StatReloader
-INFO 2020-03-23 11:54:14,644 basehttp 157 "GET /addresses/ HTTP/1.1" 200 72
-INFO 2020-03-23 11:54:14,648 basehttp 157 "GET /areas/ HTTP/1.1" 200 1772
-INFO 2020-03-23 11:55:00,497 autoreload 222 /home/ubuntu/Desktop/meiduo_mall/meiduo_mall/meiduo_mall/apps/areas/views.py changed, reloading.
-INFO 2020-03-23 11:55:01,031 autoreload 598 Watching for file changes with StatReloader
-INFO 2020-03-23 11:56:31,827 basehttp 157 "GET /areas/110000/ HTTP/1.1" 200 141
-INFO 2020-03-23 11:56:34,328 basehttp 157 "GET /areas/110100/ HTTP/1.1" 200 843
