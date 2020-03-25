@@ -1,2 +1,7 @@
 INFO 2020-03-23 13:51:47,179 autoreload 598 Watching for file changes with StatReloader
 INFO 2020-03-25 07:22:06,036 autoreload 598 Watching for file changes with StatReloader
+INFO 2020-03-25 07:24:46,677 autoreload 598 Watching for file changes with StatReloader
+WARNING 2020-03-25 07:25:19,775 log 228 Not Found: /carts/simple/
+WARNING 2020-03-25 07:25:19,775 basehttp 157 "GET /carts/simple/ HTTP/1.1" 404 179
+WARNING 2020-03-25 07:25:21,275 log 228 Not Found: /carts/simple/
+WARNING 2020-03-25 07:25:21,276 basehttp 157 "GET /carts/simple/ HTTP/1.1" 404 179
