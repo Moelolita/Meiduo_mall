@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'goods',
     # 添加 django-cors-headers 使其可以进行 cors 跨域
     'corsheaders',
+    # 定时任务
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -231,3 +233,26 @@ EMAIL_HOST_PASSWORD = 'PKOERMBXJFOLXPCB'
 EMAIL_FROM = 'C.C.<itcast888888@163.com>'
 # 邮箱验证链接
 EMAIL_VERIFY_URL = 'http://www.meiduo.site:8080/success_verify_email.html?token='
+
+# FDFS需要的配置文件路径(即: client.conf文件绝对路径).
+FDFS_CLIENT_CONF = os.path.join(BASE_DIR, 'utils/fastdfs/client.conf')
+# FDFS中storage和tracker位置.端口规定死是8888, ip换成自己的ip
+# 老师电脑ip为172.16.238.128
+FDFS_URL = 'http://192.168.116.0:8888/'
+
+# 指定django系统使用的文件存储类:
+DEFAULT_FILE_STORAGE = 'meiduo_mall.utils.fastdfs.fastdfs_storage.FastDFSStorage'
+
+# 生成的静态 html 文件保存目录
+# 先获取 BASE_DIR 的绝对路径: 即 内层 meiduo_mall 的绝对路径
+# 然后截取最后一级, 即,获取父类的绝对路径.
+# 再截取一级, 拿到项目文件的绝对路径, 然后拼接上 'front_end_pc'
+GENERATED_STATIC_HTML_FILES_DIR = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'front_end_pc')
+
+# 定时任务
+CRONJOBS = [
+    # 每1分钟生成一次首页静态文件
+    ('*/1 * * * *', 'contents.generate_index.generate_index_html', '>> ' + os.path.join(os.path.dirname(BASE_DIR), 'logs/crontab.log'))
+]
+# 解决 crontab 中文问题
+CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
