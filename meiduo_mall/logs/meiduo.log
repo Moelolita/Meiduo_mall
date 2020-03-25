@@ -5,3 +5,9 @@ WARNING 2020-03-25 07:25:19,775 log 228 Not Found: /carts/simple/
 WARNING 2020-03-25 07:25:19,775 basehttp 157 "GET /carts/simple/ HTTP/1.1" 404 179
 WARNING 2020-03-25 07:25:21,275 log 228 Not Found: /carts/simple/
 WARNING 2020-03-25 07:25:21,276 basehttp 157 "GET /carts/simple/ HTTP/1.1" 404 179
+INFO 2020-03-25 08:07:02,191 autoreload 598 Watching for file changes with StatReloader
+INFO 2020-03-25 08:20:19,867 autoreload 598 Watching for file changes with StatReloader
+INFO 2020-03-25 08:27:10,323 autoreload 222 /home/ubuntu/Desktop/meiduo_mall/meiduo_mall/meiduo_mall/settings/dev.py changed, reloading.
+INFO 2020-03-25 08:27:10,777 autoreload 598 Watching for file changes with StatReloader
+WARNING 2020-03-25 08:27:43,992 log 228 Not Found: /carts/simple/
+WARNING 2020-03-25 08:27:43,993 basehttp 157 "GET /carts/simple/ HTTP/1.1" 404 179
