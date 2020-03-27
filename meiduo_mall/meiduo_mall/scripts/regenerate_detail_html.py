@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/home/ubuntu/.virtualenvs/meiduo_mall/bin/python
 
 """
 最上面的注释意思是: 使用 python 环境来执行当前的代码
@@ -35,7 +35,7 @@ def get_goods_and_spec(sku_id):
         sku = SKU.objects.get(id=sku_id)
         # 获取该商品的图片
         sku.images = sku.skuimage_set.all()
-    except Exception as e:
+    except Exception as error:
         return JsonResponse({'code': 400,
                              'errmsg': '获取数据失败'})
 
@@ -88,7 +88,7 @@ def get_goods_and_spec(sku_id):
 
     # 渲染模板，生成静态html文件
     context = {
-        'categories': dict,
+        'categories': categories,
         'goods': goods,
         'specs': goods_specs,
         'sku': sku

@@ -26,6 +26,7 @@ def get_breadcrumb(category):
     else:
         # 5.如果category是三级类别, 往dict中添加一级和二级&三级类别的标题
         breadcrumb['cat3'] = category.name
+        cat2 = category.parent
         breadcrumb['cat2'] = category.parent.name
         breadcrumb['cat1'] = category.parent.parent.name
 
