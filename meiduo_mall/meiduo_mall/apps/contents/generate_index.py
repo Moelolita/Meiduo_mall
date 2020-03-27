@@ -47,8 +47,8 @@ def generate_static_index_html():
         'categories': dict,
         'contents': new_dict
     }
-    template = loader.get_template('index.html')
+    template = loader.get_template('indexes.html')
     html_text = template.render(context)
-    file_path = os.path.join(settings.GENERATED_STATIC_HTML_FILES_DIR, 'index.html')
+    file_path = os.path.join(settings.GENERATED_STATIC_HTML_FILES_DIR, 'indexes.html')
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write(html_text)

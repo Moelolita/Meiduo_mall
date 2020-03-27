@@ -209,7 +209,7 @@ var vm = new Vue({
             })
                 .then(response => {
                     // // 从数组中移除地址
-                    // this.addresses.splice(index, 1);
+                    // this.addresses.splice(indexes, 1);
                     if (response.data.code == 0) {
                         location.href = 'http://www.meiduo.site:8080/user_center_site.html'
                     }
@@ -247,7 +247,7 @@ var vm = new Vue({
                         withCredentials:true,
                     })
                 .then(response => {
-                    // this.default_address_id = this.addresses[index].id;
+                    // this.default_address_id = this.addresses[indexes].id;
                     if (response.data.code == 0) {
                         location.href = 'http://www.meiduo.site:8080/user_center_site.html'
                     }

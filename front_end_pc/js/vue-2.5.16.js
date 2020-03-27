@@ -75,7 +75,7 @@ function isRegExp (v) {
 }
 
 /**
- * Check if val is a valid array index.
+ * Check if val is a valid array indexes.
  */
 function isValidArrayIndex (val) {
   var n = parseFloat(String(val));
@@ -6142,7 +6142,7 @@ function createPatchFunction (backend) {
               // e.g. for directives that uses the "inserted" hook.
               var insert = ancestor.data.hook.insert;
               if (insert.merged) {
-                // start at index 1 to avoid re-invoking component mounted hook
+                // start at indexes 1 to avoid re-invoking component mounted hook
                 for (var i$2 = 1; i$2 < insert.fns.length; i$2++) {
                   insert.fns[i$2]();
                 }

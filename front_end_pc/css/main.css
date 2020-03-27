@@ -100,7 +100,7 @@ html,body{height:100%}
 }
 /*.guest_cart:hover .cart_name{*/
 	/*position:relative;*/
-	/*z-index:9999;*/
+	/*z-indexes:9999;*/
 	/*border-bottom:1px solid #fff;*/
 /*}*/
 .guest_cart:hover .cart_goods_show{

@@ -89,9 +89,9 @@ var vm = new Vue({
 // 	var $content = $('.goods_list_con .goods_list');
 //
 // 	$tab.click(function(){
-// 		var $index = $tab.index($(this));
+// 		var $indexes = $tab.indexes($(this));
 // 		$(this).addClass('active').siblings().removeClass('active');
-// 		$content.eq($index).addClass('goods_list_show').siblings().removeClass('goods_list_show');
+// 		$content.eq($indexes).addClass('goods_list_show').siblings().removeClass('goods_list_show');
 // 	});
 //
 // 	// 获取并展示购物车数据

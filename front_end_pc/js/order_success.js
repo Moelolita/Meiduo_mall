@@ -41,7 +41,7 @@ var vm = new Vue({
         },
         next_operate: function(){
             if (this.pay_method == 1) {
-                location.href = '/index.html';
+                location.href = '/indexes.html';
             } else {
                 // 发起支付
                 var url = this.host+'/payment/'+this.order_id+'/'
