@@ -1,9 +1,13 @@
 import json
 import re
+
+from django import http
 from django.views import View
 from django.http import JsonResponse
 from django.contrib.auth import login, authenticate, logout
 from django_redis import get_redis_connection
+
+from goods.models import SKU
 from meiduo_mall.utils.view import LoginRequiredMixin
 from users.models import User, Address
 import logging
@@ -475,3 +479,47 @@ class ChangePasswordView(View):
                                  'errmsg': 'ok'})
         response.delete_cookie('username')
         return response
+
+
+class UserBrowseHistory(View):
+    """用户浏览记录"""
+
+    def post(self, request):
+        json_dict = json.loads(request.body.decode())
+        sku_id = json_dict.get('sku_id')
+
+        try:
+            SKU.objects.get(id=sku_id)
+        except SKU.DoesnotExist:
+            return http.HttpResponseForbidden('sku不存在')
+
+        redis_conn = get_redis_connection('history')
+        pl = redis_conn.pipeline()
+        user_id = request.user.id
+        pl.lrem('history_%s' % user_id, 0, sku_id)
+        pl.lpush('history_%s' % user_id, sku_id)
+        pl.ltrim('history_%s' % user_id, 0, 4)
+        pl.execute()
+
+        return JsonResponse({'code': 0,
+                             'errmsg': 'OK'})
+
+    def get(self, request):
+        # 获取Redis存储的sku_id列表信息
+        redis_conn = get_redis_connection('history')
+        sku_ids = redis_conn.lrange('history_%s' % request.user.id, 0, -1)
+
+        # 根据sku_ids列表数据，查询出商品sku信息
+        skus = []
+        for sku_id in sku_ids:
+            sku = SKU.objects.get(id=sku_id)
+            skus.append({
+                'id': sku.id,
+                'name': sku.name,
+                'default_image_url': sku.default_image_url,
+                'price': sku.price
+            })
+
+        return http.JsonResponse({'code': 0,
+                                  'errmsg': 'OK',
+                                  'skus': skus})
