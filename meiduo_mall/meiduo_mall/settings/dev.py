@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'contents',
     'goods',
     'carts',
+    'orders',
     # 全文检索
     'haystack',
     # 添加 django-cors-headers 使其可以进行 cors 跨域
