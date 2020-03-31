@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'areas',
     'contents',
     'goods',
+    'carts',
     # 全文检索
     'haystack',
     # 添加 django-cors-headers 使其可以进行 cors 跨域
@@ -125,6 +126,13 @@ CACHES = {
     "history": {  # 用户浏览记录
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/3",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    "carts": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/5",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }

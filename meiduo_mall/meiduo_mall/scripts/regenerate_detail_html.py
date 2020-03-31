@@ -88,7 +88,7 @@ def get_goods_and_spec(sku_id):
 
     # 渲染模板，生成静态html文件
     context = {
-        'categories': categories,
+        'categories': dict,
         'goods': goods,
         'specs': goods_specs,
         'sku': sku
